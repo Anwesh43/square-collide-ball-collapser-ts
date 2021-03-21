@@ -205,3 +205,25 @@ class SquareCollideBallCollapser {
         this.curr.startUpdating(cb)
     }
 }
+
+class Renderer {
+
+    scbc : SquareCollideBallCollapser = new SquareCollideBallCollapser()
+    animator : Animator = new Animator()
+
+    render(context : CanvasRenderingContext2D) {
+        this.scbc.draw(context)
+    }
+
+    handleTap(cb : Function) {
+        this.scbc.startUpdating(() => {
+            this.animator.start(() => {
+                cb()
+                this.scbc.update(() => {
+                    this.animator.stop()
+                    cb()
+                })
+            })
+        })
+    }
+}
